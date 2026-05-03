@@ -1,7 +1,7 @@
 export default function Inicio() {
     return (
         <>
-            <p>Inicio</p>
+            <h1>Início</h1>
         </>
     )
 }

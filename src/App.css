@@ -1,6 +1,140 @@
+.menuSuperior {
+  background: var(--gradientEscuro);
+  box-sizing: border-box;
+  display: flex;
+  border-bottom: solid 4px white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.menuSuperior a {
+  text-decoration: none;
+  color: var(--fundo);
+  padding: 20px 30px;
+}
+
+.menuSuperior a.active {
+  background-color: var(--auxiliar);
+  color: var(--destaque1);
+  /* border-radius: 8px; */
+}
+
+/* .primeiroLink {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+} */
+
+.menuSuperior a:hover {
+  background-color: var(--auxiliar2);
+  color: var(--destaque1);
+  /* border-radius: 8px; */
+}
+
+/*------------------------------------------------------------------------------------------------*/
 main,
 body,
 #root {
   margin: 0;
   padding: 0;
+  background-color: var(--fundo);
+
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  transition: color 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 5px;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+p {
+  margin: 5px;
+}
+
+:root {
+  --fundo: #E5E5DB;
+  --destaque1: #0e4229;
+  --destaque2: #000000;
+  --texto: #000000;
+  --auxiliar: #dbf868;
+  --auxiliar2: rgb(194, 196, 182);
+  --gradientEscuro: radial-gradient(circle, rgb(0, 71, 36) 0%, rgb(0, 27, 11) 100%);
+  --gradientClaro: linear-gradient(180deg, rgba(229, 229, 219, 1) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.archivo-black-regular {
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ubuntu-light {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ubuntu-regular {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ubuntu-medium {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ubuntu-bold {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ubuntu-light-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ubuntu-regular-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ubuntu-medium-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ubuntu-bold-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import './App.css'
 
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, NavLink } from 'react-router-dom'
 import Inicio from './pages/Inicio';
 import Registros from './pages/Registros';
 
@@ -11,9 +11,9 @@ function App() {
   return (
     <>
       <header>
-        <nav>
-          <Link to="/">Início</Link>
-          <Link to="/registros">Registros</Link>
+        <nav className='menuSuperior'>
+          <NavLink to="/" end className={'primeiroLink'}>Início</NavLink>
+          <NavLink to="/registros">Registros</NavLink>
         </nav>
       </header>
 
