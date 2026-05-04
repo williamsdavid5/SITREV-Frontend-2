@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import './mapa.css'
 
@@ -69,8 +69,15 @@ const mapProviders = {
 };
 
 export default function Mapa({ center, zoom, children }) {
-    const [selectedProvider, setSelectedProvider] = useState('openstreetmap_hot');
+    const [selectedProvider, setSelectedProvider] = useState(() => {
+        const saved = localStorage.getItem('map_style');
+        return saved || 'openstreetmap_hot';
+    });
     const currentProvider = mapProviders[selectedProvider];
+
+    useEffect(() => {
+        localStorage.setItem('map_style', selectedProvider);
+    }, [selectedProvider]);
 
     return (
         <>
