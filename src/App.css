@@ -1,15 +1,24 @@
+#root,
+body {
+  height: 100dvh;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
 .menuSuperior {
-  background: var(--gradientEscuro);
   box-sizing: border-box;
   display: flex;
-  border-bottom: solid 4px white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .menuSuperior a {
   text-decoration: none;
   color: var(--fundo);
   padding: 20px 30px;
+  font-weight: bold;
 }
 
 .menuSuperior a.active {
@@ -25,12 +34,78 @@
 
 .menuSuperior a:hover {
   background-color: var(--auxiliar2);
-  color: var(--destaque1);
   /* border-radius: 8px; */
 }
 
+.headerr {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  justify-content: space-between;
+  background: var(--gradientEscuro);
+  box-sizing: border-box;
+  display: flex;
+  border-bottom: solid 4px white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.headerr img {
+  height: 40px;
+  object-fit: contain;
+  margin-right: 20px;
+}
+
+.mainPrincipal {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.botaoMenuLateral {
+  display: none;
+  background-color: var(--auxiliar);
+  color: var(--destaque1);
+  font-weight: bold;
+  border: none;
+  height: 100%;
+  width: 50px;
+  margin: 0;
+  /* margin-left: 10px; */
+}
+
+@media (max-width: 800px) {
+  .botaoMenuLateral {
+    display: block;
+  }
+
+  .menuSuperior {
+    display: none;
+  }
+
+  .menuSuperior.aberto {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 55px;
+    left: 10px;
+    z-index: 2000;
+    background-color: var(--fundo);
+    box-shadow: 0px 0px 4px rgba(0, 0, 30, 0.2);
+    border: 5px solid white;
+  }
+
+  .menuSuperior.aberto a {
+    color: var(--destaque1);
+  }
+}
+
 /*------------------------------------------------------------------------------------------------*/
-main,
+html,
 body,
 #root {
   margin: 0;
@@ -59,6 +134,10 @@ h4 {
 
 p {
   margin: 5px;
+}
+
+.pMenor {
+  font-size: 13px;
 }
 
 :root {
