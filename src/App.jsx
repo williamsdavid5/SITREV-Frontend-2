@@ -8,6 +8,7 @@ import Registros from './pages/Registros';
 import Veiculos from './pages/Veiculos';
 import Motoristas from './pages/Motoristas';
 
+import PaginaErro from './pages/PaginaErro';
 import SitrevLogo from './assets/SITREV_TEXT.svg'
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
           <Route path="/motoristas" element={<Motoristas />} />
 
           {/* Rota de fallback (404)*/}
-          <Route path="*" element={<h2>Página não encontrada</h2>} />
+          <Route path="*" element={<PaginaErro />} />
         </Routes>
       </main>
     </>

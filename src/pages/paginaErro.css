@@ -1,0 +1,35 @@
+.mainErroPage {
+    flex: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainErroPage h1 {
+    font-size: 100px;
+    color: var(--destaque1);
+    margin: 0;
+}
+
+.mainErroPage a {
+    background-color: var(--destaque2);
+    color: var(--fundo);
+    padding: 10px;
+    text-decoration: none;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.mainErroPage a:hover {
+    background-color: var(--auxiliar2);
+    color: var(--destaque1);
+}
+
+.mainErroPage img {
+    object-fit: contain;
+    width: 100px;
+    position: fixed;
+    bottom: 20px;
+}
