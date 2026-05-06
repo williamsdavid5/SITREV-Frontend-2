@@ -16,7 +16,7 @@ import alertaIcon from '../assets/alertaIcon.png';
 
 const vehicleIcon = new L.Icon({
     iconUrl: veiculoIcon,
-    iconSize: [40, 40],
+    iconSize: [50, 50],
     iconAnchor: [15, 15],
     className: 'iconeVeiculo'
 });
@@ -31,7 +31,7 @@ const pontoPercursoIcon = new L.Icon({
 
 const starPercursotIcon = new L.Icon({
     iconUrl: startIcon,
-    iconSize: [35, 35],
+    iconSize: [40, 40],
     iconAnchor: [15, 15],
     popupAnchor: [0, -15],
     className: 'startIcon'
