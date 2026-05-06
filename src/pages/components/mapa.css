@@ -45,9 +45,32 @@
 }
 
 /* LEAFLET ------------------------------------------*/
-.leaflet-top .leaflet-control {
-    /* margin-top: 25px; */
+.popUpMapa {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
+
+.popUpMapa button {
+    background-color: var(--destaque1);
+}
+
+.popUpMapa button:hover {
+    background-color: var(--auxiliar);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    border: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--destaque1);
+}
+
+/* .leaflet-top .leaflet-control {
+
+} */
 
 .leaflet-touch .leaflet-bar a {
     width: 30px;
@@ -57,7 +80,7 @@
 
 .leaflet-bar a,
 .leaflet-control-layers-toggle {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: none;

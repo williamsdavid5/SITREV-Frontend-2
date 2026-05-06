@@ -141,6 +141,20 @@ p {
   margin: 5px;
 }
 
+button {
+  background-color: var(--destaque2);
+  color: var(--fundo);
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 15px;
+}
+
+button:hover {
+  background-color: var(--auxiliar);
+  color: var(--destaque2);
+}
+
 .pMenor {
   font-size: 13px;
 }
