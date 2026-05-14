@@ -1,5 +1,4 @@
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
-import { renderToStaticMarkup } from 'react-dom/server';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 

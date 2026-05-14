@@ -1,23 +1,32 @@
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from "react"
 import './registros.css'
 
 import Mapa from "./components/Mapa";
+import { vehicleIcon, pontoPercursoIcon, starPercursotIcon, alertIcon, iconeNumero } from './components/Icones';
+import PopupInfo from './components/PopupInfo';
 
 import viajensLimpo from '../data/listaViagens';
+import viajens from "../data/rastreamento";
 
 import { formatarDataHora } from "../utils/functions";
 
 export default function Registros() {
-    const [viajens, setViagens] = useState();
+    const [viajensLista, setViagensLista] = useState();
+    const [viagemTeste, setViagemTeste] = useState();
 
     useEffect(() => {
         document.title = "SITREV - Registros";
-        setViagens(viajensLimpo);
+        setViagensLista(viajensLimpo);
+        setViagemTeste(viajens[3]);
     }, [])
 
     const [tipoPesquisa, setTipoPesquisa] = useState(1);
 
-    const [menuLateral, setMenuLateral] = useState(false);
+    const [menuLateral, setMenuLateral] = useState(true);
+    const [itemSelecionado, setItemSelecionado] = useState(0);
 
     return (
         <>
@@ -66,14 +75,22 @@ export default function Registros() {
                         </div>
                     </div>
                     <div className="listaJanela">
-                        {viajens?.map((viagem, index) => {
+                        {viajensLista?.map((viagem, index) => {
                             return (
-                                <div className="itemViagemLista" key={index}>
+                                <div className="itemViagemLista" key={index} onClick={() => {
+                                    setItemSelecionado(viagem.id);
+                                }}>
                                     <p>
                                         <b>Veículo:</b> {viagem.modelo_veiculo} ({viagem.identificador_veiculo}) <br />
                                         <b>Motorista: </b> {viagem.nome_motorista} <br />
                                         <b>Ultimo registro: </b> {formatarDataHora(viagem.ultimo_registro)}
                                     </p>
+                                    {itemSelecionado == viagem.id && (
+                                        <button
+                                            className="botaoExibirPercurso"
+                                            onClick={() => setMenuLateral(false)}
+                                        >Exibir percurso</button>
+                                    )}
                                 </div>
                             )
                         })}
@@ -81,7 +98,66 @@ export default function Registros() {
                 </aside>
                 <section className="direitajanela">
                     <Mapa>
+                        {viagemTeste && itemSelecionado && (() => {
+                            const registros = viagemTeste.registros;
+                            const ultimoRegistro = registros[registros.length - 1];
+                            const rotaCoordenadas = registros.map(reg => [
+                                parseFloat(reg.latitude),
+                                parseFloat(reg.longitude)
+                            ]);
+                            const posicaoVeiculo = [
+                                parseFloat(ultimoRegistro.latitude),
+                                parseFloat(ultimoRegistro.longitude)
+                            ];
 
+                            return (
+                                <>
+                                    <Polyline
+                                        positions={rotaCoordenadas}
+                                        pathOptions={{
+                                            color: 'var(--destaque1)',
+                                            dashArray: '0, 0',
+                                            weight: 3
+                                        }}
+                                    />
+
+                                    {registros.slice(0, -1).map((reg, index) => {
+                                        const isFirst = index === 0;
+                                        const iconeNumerado = iconeNumero(index + 1);
+
+                                        return (
+                                            <Marker
+                                                key={reg.id}
+                                                position={[parseFloat(reg.latitude), parseFloat(reg.longitude)]}
+                                                icon={isFirst ? starPercursotIcon : iconeNumerado}
+                                            >
+                                                <Popup>
+                                                    <PopupInfo
+                                                        tipo={isFirst ? 'inicio' : 'ponto'}
+                                                        viagem={viagemTeste}
+                                                        pontoNumero={index + 1}
+                                                        posicaoVeiculo={posicaoVeiculo}
+                                                    />
+                                                </Popup>
+                                            </Marker>
+                                        );
+                                    })}
+
+                                    <Marker
+                                        position={posicaoVeiculo}
+                                        icon={vehicleIcon}
+                                    >
+                                        <Popup>
+                                            <PopupInfo
+                                                tipo="veiculo"
+                                                viagem={viagemTeste}
+                                                posicaoVeiculo={posicaoVeiculo}
+                                            />
+                                        </Popup>
+                                    </Marker>
+                                </>
+                            );
+                        })()}
                     </Mapa>
                 </section>
             </main>
