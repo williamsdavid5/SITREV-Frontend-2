@@ -1,6 +1,7 @@
 .registrosMain {
     /* background-color: red; */
     flex: 1;
+    min-height: 0;
     box-sizing: border-box;
     display: flex;
 }
@@ -70,4 +71,66 @@
 
 .itemViagemLista:hover {
     background-color: white;
+}
+
+.botaoExibirJanela {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    border-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 60px;
+    z-index: 100000;
+    display: none;
+
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+    border: solid 1px white;
+    color: var(--destaque1);
+}
+
+.botaoExibirJanela:hover {
+    background-color: white;
+}
+
+.botaoFecharJanelaLateral {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    .esquerdaJanela {
+        width: 30dvw;
+    }
+}
+
+@media (max-width: 1000px) {
+    .esquerdaJanela {
+        width: 35dvw;
+    }
+}
+
+@media (max-width: 800px) {
+    .esquerdaJanela {
+        display: none;
+    }
+
+    .esquerdaJanela.ativo {
+        display: flex;
+        position: fixed;
+        box-sizing: border-box;
+        width: 100dvw;
+        height: calc(100% - 40px);
+        left: 0;
+        z-index: 1100;
+    }
+
+    .botaoExibirJanela {
+        display: block;
+    }
+
+    .botaoFecharJanelaLateral {
+        display: block;
+    }
 }

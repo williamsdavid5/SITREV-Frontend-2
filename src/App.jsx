@@ -21,7 +21,9 @@ function App() {
         <button className="botaoMenuLateral" onClick={() => setMenuAberto(!menuAberto)}>
           {menuAberto ? '✕' : '☰'}
         </button>
-        <nav className={`menuSuperior ${menuAberto ? 'aberto' : ''}`}>
+        <nav
+          className={`menuSuperior ${menuAberto ? 'aberto' : ''}`}
+        >
           <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>Início</NavLink>
           <NavLink to="/registros" onClick={() => setMenuAberto(false)}>Registros</NavLink>
           <NavLink to="/veiculos" onClick={() => setMenuAberto(false)}>Veículos</NavLink>

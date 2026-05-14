@@ -8,7 +8,7 @@ import viajensLimpo from '../data/listaViagens';
 import { formatarDataHora } from "../utils/functions";
 
 export default function Registros() {
-    const [viajens, setViagens] = useState([]);
+    const [viajens, setViagens] = useState();
 
     useEffect(() => {
         document.title = "SITREV - Registros";
@@ -17,15 +17,34 @@ export default function Registros() {
 
     const [tipoPesquisa, setTipoPesquisa] = useState(1);
 
+    const [menuLateral, setMenuLateral] = useState(false);
+
     return (
         <>
             <main className="registrosMain">
-                <aside className="esquerdaJanela esquerdaRegistros">
+                {!menuLateral && (
+                    <button
+                        className="botaoExibirJanela"
+                        onClick={() => setMenuLateral(!menuLateral)}
+                    >
+                        ➜
+                    </button>
+                )}
+                <aside className={`esquerdaJanela esquerdaRegistros ${menuLateral && 'ativo'}`}>
                     <div className="topoJanela">
-                        <h2>Registros</h2>
-                        <p className="pMenor">
-                            Reconstrua todos os registros armazenados no sistema
-                        </p>
+                        <span style={{ width: '100%', justifyContent: 'space-between', display: 'flex' }}>
+                            <span>
+                                <h2>Registros</h2>
+                                <p className="pMenor">
+                                    Reconstrua todos os registros armazenados no sistema
+                                </p>
+                            </span>
+                            <button
+                                className="botaoFecharJanelaLateral"
+                                onClick={() => setMenuLateral(!menuLateral)}>
+                                Fechar
+                            </button>
+                        </span>
                         {tipoPesquisa == 1 ?
                             <>
                                 <input type="text" placeholder="Pesquise qualquer coisa" />
@@ -47,7 +66,7 @@ export default function Registros() {
                         </div>
                     </div>
                     <div className="listaJanela">
-                        {viajens.map((viagem, index) => {
+                        {viajens?.map((viagem, index) => {
                             return (
                                 <div className="itemViagemLista" key={index}>
                                     <p>
