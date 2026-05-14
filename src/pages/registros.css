@@ -13,6 +13,11 @@
     z-index: 500;
 }
 
+.esquerdaRegistros {
+    display: flex;
+    flex-direction: column;
+}
+
 .topoJanela {
     padding: 10px;
     display: flex;
@@ -47,4 +52,22 @@
     min-width: 0;
     min-height: 0;
     box-sizing: border-box;
+}
+
+.listaJanela {
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.itemViagemLista {
+    padding: 15px;
+    border-top: 1px solid rgba(0, 0, 0, .2);
+    cursor: pointer;
+}
+
+.itemViagemLista:hover {
+    background-color: white;
 }

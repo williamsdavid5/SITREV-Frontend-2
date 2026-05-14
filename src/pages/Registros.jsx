@@ -1,53 +1,21 @@
 import { useEffect, useState } from "react"
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import './registros.css'
 
-import Mapa from "./components/Mapa"
+import Mapa from "./components/Mapa";
 
+import viajensLimpo from '../data/listaViagens';
 
-import veiculoIcon from '../assets/veiculoIcon.png';
-import pontoIcon from '../assets/pontoIcon.png'
-import startIcon from '../assets/startIcon.png';
-import alertaIcon from '../assets/alertaIcon.png';
+import { formatarDataHora } from "../utils/functions";
 
 export default function Registros() {
+    const [viajens, setViagens] = useState([]);
+
     useEffect(() => {
         document.title = "SITREV - Registros";
+        setViagens(viajensLimpo);
     }, [])
 
     const [tipoPesquisa, setTipoPesquisa] = useState(1);
-
-    const vehicleIcon = new L.Icon({
-        iconUrl: veiculoIcon,
-        iconSize: [50, 50],
-        iconAnchor: [15, 15],
-        className: 'iconeVeiculo'
-    });
-
-    const pontoPercursoIcon = new L.Icon({
-        iconUrl: pontoIcon,
-        iconSize: [35, 35],
-        iconAnchor: [15, 15],
-        popupAnchor: [0, -15],
-        className: 'pontoIcon'
-    });
-
-    const starPercursotIcon = new L.Icon({
-        iconUrl: startIcon,
-        iconSize: [40, 40],
-        iconAnchor: [15, 15],
-        popupAnchor: [0, -15],
-        className: 'startIcon'
-    });
-
-    const alertIcon = new L.Icon({
-        iconUrl: alertaIcon,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-        className: 'iconeAlerta'
-    });
-
-    const position = [-3.75467, -49.6751];
 
     return (
         <>
@@ -79,7 +47,17 @@ export default function Registros() {
                         </div>
                     </div>
                     <div className="listaJanela">
-
+                        {viajens.map((viagem, index) => {
+                            return (
+                                <div className="itemViagemLista" key={index}>
+                                    <p>
+                                        <b>Veículo:</b> {viagem.modelo_veiculo} ({viagem.identificador_veiculo}) <br />
+                                        <b>Motorista: </b> {viagem.nome_motorista} <br />
+                                        <b>Ultimo registro: </b> {formatarDataHora(viagem.ultimo_registro)}
+                                    </p>
+                                </div>
+                            )
+                        })}
                     </div>
                 </aside>
                 <section className="direitajanela">
