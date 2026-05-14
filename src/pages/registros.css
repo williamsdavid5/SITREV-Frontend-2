@@ -1,0 +1,50 @@
+.registrosMain {
+    /* background-color: red; */
+    flex: 1;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.esquerdaJanela {
+    background-color: var(--fundo);
+    width: 25dvw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    z-index: 500;
+}
+
+.topoJanela {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.topoJanela input {
+    margin: 6px 0px;
+}
+
+.inputsPeriodo {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputsPeriodo input {
+    flex: 1;
+    min-width: 0;
+}
+
+.inputsPeriodo select {
+    flex: 1;
+}
+
+.direitajanela {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+}

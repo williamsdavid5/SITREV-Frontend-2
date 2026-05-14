@@ -5,7 +5,7 @@ import './mapa.css'
 
 import mapaProviders from '../../data/mapProviders';
 
-export default function Mapa({ center, zoom, children }) {
+export default function Mapa({ children, center = [-3.75467, -49.6751], zoom = 15 }) {
     const [mapProviders, setMapProviders] = useState(mapaProviders.default);
 
     const [selectedKey, setSelectedKey] = useState(() => {
