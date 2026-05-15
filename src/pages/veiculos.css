@@ -10,11 +10,13 @@
     display: flex;
     flex-direction: column;
     border-top-left-radius: 20px;
+    overflow-x: hidden;
 }
 
 .itemVeiculoLista {
     display: flex;
-    background-color: var(--fundo);
+    flex-direction: row;
+    background-color: white;
     border-radius: 8px;
     border: none;
     transition: transform ease-in-out 0.1s;
@@ -25,12 +27,12 @@
 }
 
 .itemVeiculoLista:hover {
-    background-color: var(--fundo);
+    background-color: rgb(244, 244, 244);
     transform: scale(1.02);
 }
 
 .itemVeiculoLista.itemAtivo {
-    background-color: white;
+    background-color: var(--fundo);
 }
 
 .itemVeiculoLista .esquerda {
@@ -51,4 +53,54 @@
     object-fit: contain;
     width: 90px;
     margin: 0px 15px;
+}
+
+@media (max-width: 1300px) {
+    .esquerdaVeiculos {
+        width: 40dvw;
+    }
+
+    .itemVeiculoLista .direita {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1300px) {
+    .esquerdaVeiculos {
+        width: 45dvw;
+    }
+}
+
+@media (max-width: 800px) {
+    .listaJanelaVeiculo {
+        padding: 0;
+        gap: 0;
+    }
+
+    .itemVeiculoLista {
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0;
+    }
+
+    .itemVeiculoLista .esquerda {
+        flex: 1;
+    }
+
+    .itemVeiculoLista .direita {
+        flex: 1;
+    }
+}
+
+@media (max-width: 500px) {
+    .itemVeiculoLista .esquerda {
+        flex: none;
+        width: 100px;
+        height: 70px;
+        justify-content: flex-start;
+    }
+
+    .veiculoIconeLista {
+        width: 70px;
+        margin: 0;
+    }
 }

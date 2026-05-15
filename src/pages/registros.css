@@ -135,6 +135,13 @@
         z-index: 1100;
     }
 
+    .itemViagemLista {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
     .botaoExibirJanela {
         display: block;
     }
@@ -145,5 +152,11 @@
 
     .botaoExibirPercurso {
         display: block;
+    }
+}
+
+@media (max-width: 500px) {
+    .listaJanela {
+        font-size: 13px;
     }
 }
