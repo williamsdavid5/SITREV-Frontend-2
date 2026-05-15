@@ -4,12 +4,14 @@ import pontoIcon from '../../assets/pontoIcon.png';
 import startIcon from '../../assets/startIcon.png';
 import alertaIcon from '../../assets/alertaIcon.png';
 
+import rodaIcon from '../../assets/rodaIcon.png'
 
-export const vehicleIcon = new L.Icon({
-    iconUrl: veiculoIcon,
-    iconSize: [50, 50],
-    iconAnchor: [15, 15],
-    className: 'iconeVeiculo'
+
+export const vehicleIcon = L.divIcon({
+    html: `<img src="${rodaIcon}" class="roda-animada" style="width:40px; height:40px;">`,
+    iconSize: [20, 20],
+    iconAnchor: [25, 25],
+    className: 'container-veiculo'
 });
 
 export const pontoPercursoIcon = new L.Icon({

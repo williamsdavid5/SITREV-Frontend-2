@@ -27,6 +27,24 @@
     margin-top: 5px;
 }
 
+.roda-animada {
+    /* Mantém a animação infinita */
+    animation: girar 2s linear infinite;
+
+    /* Força a origem do giro para o centro do ícone */
+    transform-origin: center center !important;
+}
+
+@keyframes girar {
+    from {
+        /* Usamos 'rotate' sozinho; o Leaflet cuidará do 'translate' via estilo inline */
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 @media (max-width: 500px) {
     .janelaProviders {
