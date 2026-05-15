@@ -1,0 +1,54 @@
+.esquerdaVeiculos {
+    width: 35dvw;
+}
+
+.listaJanelaVeiculo {
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: white;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 20px;
+}
+
+.itemVeiculoLista {
+    display: flex;
+    background-color: var(--fundo);
+    border-radius: 8px;
+    border: none;
+    transition: transform ease-in-out 0.1s;
+}
+
+.itemVeiculoLista .botaoExibirPercurso {
+    width: 60%;
+}
+
+.itemVeiculoLista:hover {
+    background-color: var(--fundo);
+    transform: scale(1.02);
+}
+
+.itemVeiculoLista.itemAtivo {
+    background-color: white;
+}
+
+.itemVeiculoLista .esquerda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemVeiculoLista .direita {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.veiculoIconeLista {
+    object-fit: contain;
+    width: 90px;
+    margin: 0px 15px;
+}
