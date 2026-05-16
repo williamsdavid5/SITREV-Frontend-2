@@ -41,7 +41,7 @@ export default function Registros() {
                 )}
                 <aside className={`esquerdaJanela esquerdaRegistros ${menuLateral && 'ativo'}`}>
                     <div className="topoJanela">
-                        <span style={{ width: '100%', justifyContent: 'space-between', display: 'flex' }}>
+                        <span className='espacoEntre'>
                             <span>
                                 <h2>Registros</h2>
                                 <p className="pMenor">
