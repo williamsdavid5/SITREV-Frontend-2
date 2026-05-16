@@ -36,7 +36,7 @@ export default function Registros() {
                         className="botaoExibirJanela"
                         onClick={() => setMenuLateral(!menuLateral)}
                     >
-                        ➜
+                        ❯
                     </button>
                 )}
                 <aside className={`esquerdaJanela esquerdaRegistros ${menuLateral && 'ativo'}`}>
@@ -51,7 +51,7 @@ export default function Registros() {
                             <button
                                 className="botaoFecharJanelaLateral"
                                 onClick={() => setMenuLateral(!menuLateral)}>
-                                Fechar
+                                ❮
                             </button>
                         </span>
                         {tipoPesquisa == 1 ?

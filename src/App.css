@@ -154,6 +154,11 @@ p {
   margin: 0px;
 }
 
+hr {
+  width: 100%;
+  margin: 3px;
+}
+
 button,
 input,
 select {
@@ -244,6 +249,18 @@ tbody tr:last-child td {
   --auxiliar2: rgb(194, 196, 182);
   --gradientEscuro: radial-gradient(circle, rgb(0, 71, 36) 0%, rgb(0, 27, 11) 100%);
   --gradientClaro: linear-gradient(180deg, rgba(229, 229, 219, 1) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.destaqueGreen {
+  color: green;
+}
+
+.desatqueRed {
+  color: red;
+}
+
+.destaqueGold {
+  color: rgb(212, 166, 0);
 }
 
 .roboto-regular {

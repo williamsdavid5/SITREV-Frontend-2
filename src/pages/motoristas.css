@@ -1,0 +1,151 @@
+.mainMotoristas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.topoMotoristas {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* gap: 5px; */
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border: solid 1px var(--auxiliar2);
+}
+
+.blocosMotoristas {
+    background-color: white;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-auto-rows: 150px;
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.bloco {
+    background-color: var(--fundo);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    grid-column: span 1;
+    grid-row: span 1;
+    display: flex;
+    cursor: pointer;
+    /* flex-direction: column; */
+    /* align-items: center; */
+}
+
+.blocoSelecionado {
+    background-color: var(--auxiliar);
+}
+
+.bloco:hover {
+    background-color: var(--auxiliar2);
+}
+
+.bloco .esquerda {
+    /* background-color: rebeccapurple; */
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.bloco .direita {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.motoristaFoto {
+    object-fit: contain;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.botaoVerMaisMotorista {
+    width: 80%;
+    max-width: 300px;
+}
+
+.inputPesquisaMotorista {
+    width: 500px;
+    margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+    .inputPesquisaMotorista {
+        width: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .auxTopoMotoristas {
+        flex-direction: column;
+    }
+
+    .inputPesquisaMotorista {
+        width: 90%;
+    }
+
+    .botaoVerMaisMotorista {
+        max-width: none;
+        width: 100%;
+    }
+
+    .bloco {
+        flex-direction: column;
+    }
+
+    .bloco .esquerda {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .bloco .direita {
+        justify-content: flex-start;
+    }
+
+    .bloco p {
+        font-size: 13px;
+    }
+
+    .blocosMotoristas {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-auto-rows: 300px;
+    }
+
+    .motoristaFoto {
+        height: 100px;
+    }
+}
+
+@media (max-width: 450px) {
+    .blocosMotoristas {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-auto-rows: auto;
+    }
+}
+
+@media (max-width: 300px) {
+    .blocosMotoristas {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        /* grid-auto-rows: 300px; */
+    }
+}

@@ -549,7 +549,7 @@ export default function Veiculos() {
                         className="botaoExibirJanela"
                         onClick={() => setMenuLateral(!menuLateral)}
                     >
-                        ➜
+                        ❯
                     </button>
                 )}
                 <aside className={`esquerdaJanela esquerdaVeiculos ${menuLateral && 'ativo'}`}>
@@ -564,7 +564,7 @@ export default function Veiculos() {
                             <button
                                 className="botaoFecharJanelaLateral"
                                 onClick={() => setMenuLateral(!menuLateral)}>
-                                Fechar
+                                ❮
                             </button>
                         </span>
                         <input type="text" placeholder="Pesquise qualquer coisa" />
