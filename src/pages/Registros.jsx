@@ -16,6 +16,12 @@ import { formatarDataHora } from "../utils/functions";
 export default function Registros() {
     const [viajensLista, setViagensLista] = useState();
     const [viagemTeste, setViagemTeste] = useState();
+    const [dadosRota, setDadosRota] = useState(null);
+
+    const [tipoPesquisa, setTipoPesquisa] = useState(1);
+
+    const [menuLateral, setMenuLateral] = useState(true);
+    const [itemSelecionado, setItemSelecionado] = useState(0);
 
     useEffect(() => {
         document.title = "SITREV - Registros";
@@ -23,10 +29,17 @@ export default function Registros() {
         setViagemTeste(viajens[3]);
     }, [])
 
-    const [tipoPesquisa, setTipoPesquisa] = useState(1);
+    //quando um item é selecionado, a rota é definida no estado para que o mapa possa renderizar o polyline
+    useEffect(() => {
+        if (viagemTeste && itemSelecionado != 0) {
+            const rotaCoordenadas = viagemTeste.registros.map(reg => [
+                parseFloat(reg.latitude),
+                parseFloat(reg.longitude)
+            ]);
 
-    const [menuLateral, setMenuLateral] = useState(true);
-    const [itemSelecionado, setItemSelecionado] = useState(0);
+            setDadosRota(rotaCoordenadas);
+        }
+    }, [itemSelecionado, viagemTeste])
 
     return (
         <>
@@ -97,14 +110,11 @@ export default function Registros() {
                     </div>
                 </aside>
                 <section className="direitajanela">
-                    <Mapa>
+                    <Mapa dadosRota={dadosRota}>
                         {viagemTeste && itemSelecionado && (() => {
                             const registros = viagemTeste.registros;
                             const ultimoRegistro = registros[registros.length - 1];
-                            const rotaCoordenadas = registros.map(reg => [
-                                parseFloat(reg.latitude),
-                                parseFloat(reg.longitude)
-                            ]);
+
                             const posicaoVeiculo = [
                                 parseFloat(ultimoRegistro.latitude),
                                 parseFloat(ultimoRegistro.longitude)
@@ -112,15 +122,6 @@ export default function Registros() {
 
                             return (
                                 <>
-                                    <Polyline
-                                        positions={rotaCoordenadas}
-                                        pathOptions={{
-                                            color: 'var(--destaque1)',
-                                            dashArray: '0, 0',
-                                            weight: 3
-                                        }}
-                                    />
-
                                     {registros.slice(0, -1).map((reg, index) => {
                                         const isFirst = index === 0;
                                         const iconeNumerado = iconeNumero(index + 1);

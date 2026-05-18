@@ -285,6 +285,19 @@ export default function Veiculos() {
     const [itemSelecionado, setItemSelecionado] = useState({ id: 0 });
     const [modalMaisInformacoes, setModalMaisInformacoes] = useState(false);
 
+    const [dadosRota, setDadosRota] = useState(null);
+    //quando um item é selecionado, a rota é definida no estado para que o mapa possa renderizar o polyline
+    useEffect(() => {
+        if (viagemTeste && itemSelecionado != 0) {
+            const rotaCoordenadas = viagemTeste.registros.map(reg => [
+                parseFloat(reg.latitude),
+                parseFloat(reg.longitude)
+            ]);
+
+            setDadosRota(rotaCoordenadas);
+        }
+    }, [itemSelecionado, viagemTeste])
+
     const veiculosLista = [
         {
             id: 1,
@@ -615,7 +628,7 @@ export default function Veiculos() {
                     </div>
                 </aside>
                 <section className="direitajanela">
-                    <Mapa>
+                    <Mapa dadosRota={dadosRota}>
                         {viagemTeste && itemSelecionado && (() => {
                             const registros = viagemTeste.registros;
                             const ultimoRegistro = registros[registros.length - 1];
@@ -630,15 +643,6 @@ export default function Veiculos() {
 
                             return (
                                 <>
-                                    <Polyline
-                                        positions={rotaCoordenadas}
-                                        pathOptions={{
-                                            color: 'var(--destaque1)',
-                                            dashArray: '0, 0',
-                                            weight: 3
-                                        }}
-                                    />
-
                                     {registros.slice(0, -1).map((reg, index) => {
                                         const isFirst = index === 0;
                                         const iconeNumerado = iconeNumero(index + 1);
