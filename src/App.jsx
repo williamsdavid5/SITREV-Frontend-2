@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './App.css'
 
 import { Routes, Route, NavLink } from 'react-router-dom'
+import Login from './pages/Login';
 import Inicio from './pages/Inicio';
 import Registros from './pages/Registros';
 import Veiculos from './pages/Veiculos';
@@ -14,6 +15,9 @@ import SitrevLogo from './assets/SITREV_TEXT.svg'
 function App() {
 
   const [menuAberto, setMenuAberto] = useState(false);
+  const [janelaLogin, setJanelaLogin] = useState(true);
+  const [logado, setLogado] = useState(true);
+  const [dadoUsuario, setDadosUsuario] = useState({ nomeUsuario: 'davidduart', email: 'davidduart04@gmail.com' });
 
   return (
     <>
@@ -24,6 +28,14 @@ function App() {
         <nav
           className={`menuSuperior ${menuAberto ? 'aberto' : ''}`}
         >
+          <button className='botaoLogin'>
+            {logado ?
+              <span>
+                <b>{dadoUsuario.nomeUsuario}</b> <br />
+                <p className='pEmail'>{dadoUsuario.email}</p>
+              </span>
+              : 'Login'}
+          </button>
           <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>Início</NavLink>
           <NavLink to="/registros" onClick={() => setMenuAberto(false)}>Registros</NavLink>
           <NavLink to="/veiculos" onClick={() => setMenuAberto(false)}>Veículos</NavLink>

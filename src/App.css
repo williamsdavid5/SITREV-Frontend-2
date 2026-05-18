@@ -19,6 +19,9 @@ body {
   color: var(--fundo);
   padding: 20px 30px;
   font-weight: bold;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  transition: transform ease-in-out 0.05s;
 }
 
 .menuSuperior a.active {
@@ -27,14 +30,39 @@ body {
   /* border-radius: 8px; */
 }
 
-/* .primeiroLink {
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-} */
+.primeiroLink {
+  border-bottom-left-radius: 0 !important;
+}
 
 .menuSuperior a:hover {
-  background-color: var(--auxiliar2);
+  /* background-color: var(--auxiliar2); */
+  color: var(--auxiliar);
+  transform: scale(1.06);
   /* border-radius: 8px; */
+}
+
+.menuSuperior a.active:hover {
+  transform: none;
+  color: white;
+}
+
+.botaoLogin {
+  /* background-color: var(--destaque2); */
+
+  background-image: url('../src/assets/padraoBackgroundLogoSitrev.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  color: var(--auxiliar);
+  border-radius: 0;
+}
+
+.botaoLogin:hover {
+  color: white;
+}
+
+.pEmail {
+  font-size: 11px;
 }
 
 .headerr {
@@ -109,6 +137,16 @@ body {
 
   .menuSuperior.aberto a {
     color: var(--destaque1);
+    border-radius: 0;
+  }
+
+  .menuSuperior.aberto a:hover {
+    transform: none;
+    background-color: white;
+  }
+
+  .menuSuperior.aberto .botaoLogin {
+    height: 60px;
   }
 
   .headerr {
