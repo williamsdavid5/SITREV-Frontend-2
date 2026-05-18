@@ -203,8 +203,8 @@ function ModalMaisDetalhes({ veiculo, setVisivel }) {
     return (
         <>
             <div className='backgroudModal'>
-                <div className='janelaModal'>
-                    <div className='espacoEntre'>
+                <section className='janelaModal'>
+                    <section className='espacoEntre'>
                         <span>
                             <div className='topoModal'>
                                 {veiculo.tipo_veiculo === 'carro' ?
@@ -231,7 +231,7 @@ function ModalMaisDetalhes({ veiculo, setVisivel }) {
                         <button onClick={() => setVisivel(false)} className='botaoFecharModal'>
                             X
                         </button>
-                    </div>
+                    </section>
                     <hr />
                     <p><b>Registros de viagem</b></p>
                     <div className='tabelaViagensContainer'>
@@ -264,7 +264,7 @@ function ModalMaisDetalhes({ veiculo, setVisivel }) {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </section>
             </div>
         </>
     )
@@ -566,7 +566,7 @@ export default function Veiculos() {
                     </button>
                 )}
                 <aside className={`esquerdaJanela esquerdaVeiculos ${menuLateral && 'ativo'}`}>
-                    <div className="topoJanela">
+                    <section className="topoJanela">
                         <span className='espacoEntre'>
                             <span>
                                 <h2>Veículos</h2>
@@ -581,8 +581,8 @@ export default function Veiculos() {
                             </button>
                         </span>
                         <input type="text" placeholder="Pesquise qualquer coisa" />
-                    </div>
-                    <div className="listaJanela listaJanelaVeiculo">
+                    </section>
+                    <section className="listaJanela listaJanelaVeiculo">
                         {veiculosLista?.map((veiculo, index) => {
                             return (
                                 <div className={`itemViagemLista itemVeiculoLista ${veiculo.id == itemSelecionado.id && 'itemAtivo'}`} key={index} onClick={() => {
@@ -625,7 +625,7 @@ export default function Veiculos() {
                                 </div>
                             )
                         })}
-                    </div>
+                    </section>
                 </aside>
                 <section className="direitajanela">
                     <Mapa dadosRota={dadosRota}>

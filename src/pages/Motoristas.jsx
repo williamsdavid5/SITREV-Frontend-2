@@ -177,7 +177,7 @@ export default function Motoristas() {
     return (
         <>
             <main className="mainMotoristas">
-                <div className="topoMotoristas">
+                <section className="topoMotoristas">
                     <span className="espacoEntre auxTopoMotoristas">
                         <span>
                             <h1>Motoristas</h1>
@@ -186,7 +186,7 @@ export default function Motoristas() {
                         <input type="text" placeholder="Pesquise qualquer coisa" className="inputPesquisaMotorista" />
                     </span>
 
-                </div>
+                </section>
                 <section className={`blocosMotoristas`}>
                     {motoristasLista.map((motorista) => (
                         <div className={`bloco ${itemSelecionado.id == motorista.id && 'blocoSelecionado'}`} key={motorista.id} onClick={() => setItemSelecionado(motorista)}>

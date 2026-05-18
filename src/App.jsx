@@ -28,7 +28,7 @@ function App() {
         <nav
           className={`menuSuperior ${menuAberto ? 'aberto' : ''}`}
         >
-          <button className='botaoLogin'>
+          <button className='botaoLogin' onClick={() => setJanelaLogin(true)}>
             {logado ?
               <span>
                 <b>{dadoUsuario.nomeUsuario}</b> <br />
@@ -55,6 +55,12 @@ function App() {
           <Route path="*" element={<PaginaErro />} />
         </Routes>
       </main>
+
+      {janelaLogin && <>
+        <Login
+          setJanela={setJanelaLogin}
+        ></Login>
+      </>}
     </>
   )
 }

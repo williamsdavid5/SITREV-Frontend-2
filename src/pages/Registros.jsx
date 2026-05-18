@@ -53,7 +53,7 @@ export default function Registros() {
                     </button>
                 )}
                 <aside className={`esquerdaJanela esquerdaRegistros ${menuLateral && 'ativo'}`}>
-                    <div className="topoJanela">
+                    <section className="topoJanela">
                         <span className='espacoEntre'>
                             <span>
                                 <h2>Registros</h2>
@@ -86,8 +86,8 @@ export default function Registros() {
                             </select>
                             <button>Limpar filtros</button>
                         </div>
-                    </div>
-                    <div className="listaJanela">
+                    </section>
+                    <section className="listaJanela">
                         {viajensLista?.map((viagem, index) => {
                             return (
                                 <div className="itemViagemLista" key={index} onClick={() => {
@@ -107,7 +107,7 @@ export default function Registros() {
                                 </div>
                             )
                         })}
-                    </div>
+                    </section>
                 </aside>
                 <section className="direitajanela">
                     <Mapa dadosRota={dadosRota}>

@@ -1,0 +1,120 @@
+.janelaLogin {
+    background-color: var(--destaque1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    z-index: 100000;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.formularioLogin {
+    background-color: var(--fundo);
+    width: 50dvw;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.formularioLogin input {
+    background-color: white;
+    border: solid 1px var(--auxiliar2);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.formularioLogin button,
+.formularioLogin p,
+.formularioLogin h1 {
+    width: 60%;
+}
+
+.formularioLogin a {
+    color: black;
+    font-size: 14px;
+}
+
+.formularioLogin p {
+    font-size: 14px;
+}
+
+.spanInpus {
+    width: 60%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0px;
+}
+
+.spanInpus input {
+    width: 100%;
+}
+
+.logoLogin {
+    object-fit: contain;
+    width: 160px;
+    margin-bottom: 20px;
+}
+
+.imagemDecorativa {
+    width: 50dvw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../assets/backgroundLogin.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+.textoApresentacao {
+    width: 80%;
+    color: white;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1100px) {
+
+    .formularioLogin button,
+    .formularioLogin p,
+    .formularioLogin h1,
+    .spanInpus {
+        width: 75%;
+    }
+}
+
+@media (max-width: 800px) {
+    .formularioLogin {
+        width: 70dvw;
+    }
+
+    .imagemDecorativa {
+        width: 30dvw;
+    }
+
+    .imagemDecorativa p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 700px) {
+    .imagemDecorativa {
+        display: none;
+    }
+
+    .formularioLogin {
+        width: 100dvw;
+    }
+
+    .logoLogin {
+        width: 100px;
+    }
+}
