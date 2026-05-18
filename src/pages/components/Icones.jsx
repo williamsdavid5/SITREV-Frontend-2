@@ -51,11 +51,11 @@ export const iconeNumero = (number, color = 'var(--destaque1)') => {
                 color: white;
                 font-weight: bold;
                 font-size: 12px;
-                border: 4px solid white;
+                border: 2px solid white;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             ">${number}</div>`,
         iconSize: [28, 28],
-        iconAnchor: [18, 18],
+        iconAnchor: [9, 9],
         popupAnchor: [0, -14]
     });
 };
