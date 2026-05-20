@@ -15,7 +15,7 @@ import SitrevLogo from './assets/SITREV_TEXT.svg'
 function App() {
 
   const [menuAberto, setMenuAberto] = useState(false);
-  const [janelaLogin, setJanelaLogin] = useState(true);
+  const [janelaLogin, setJanelaLogin] = useState(false);
   const [logado, setLogado] = useState(true);
   const [dadoUsuario, setDadosUsuario] = useState({ nomeUsuario: 'davidduart', email: 'davidduart04@gmail.com' });
 

@@ -205,7 +205,7 @@ export default function Motoristas() {
                                         <span className="destaqueGold"><b>Em viagem</b></span>
                                     )}
                                 </p>
-                                {itemSelecionado.id == motorista.id && (
+                                {/* {itemSelecionado.id == motorista.id && (
                                     <>
                                         <span style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                                             <button
@@ -213,7 +213,7 @@ export default function Motoristas() {
                                             >Ver mais</button>
                                         </span>
                                     </>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     ))}
