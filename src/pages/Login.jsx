@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext'
 export default function Login({ setJanela, onLoginSuccess }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
     const { login, loading } = useAuth();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ export default function Login({ setJanela, onLoginSuccess }) {
     }, []);
 
     const handleLogin = async () => {
-        setError('');
+        setError(null);
 
         if (!username || !password) {
             setError('Preencha todos os campos');
@@ -32,6 +32,7 @@ export default function Login({ setJanela, onLoginSuccess }) {
 
         if (result.success) {
             console.log('Login realizado com sucesso!');
+            setError(null);
 
             if (onLoginSuccess) {
                 onLoginSuccess();
@@ -83,7 +84,9 @@ export default function Login({ setJanela, onLoginSuccess }) {
                             required
                         />
                     </span>
-                    <a href="#">esqueci a senha</a>
+                    {error != null && (
+                        <p style={{ color: 'red' }}>Algo deu errado! Verifique suas informações</p>
+                    )}
                     <button
                         onClick={handleLogin}
                         disabled={loading}
