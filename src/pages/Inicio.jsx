@@ -28,7 +28,6 @@ export default function Inicio() {
 
     }, [viagemSelecionada])
 
-    // para mostrar uma viagem por vez no mapa
     const alternarPercurso = (viagem) => {
         setViagemSelecionada(viagemSelecionada.id === viagem.id ? { id: 0 } : viagem);
     };
