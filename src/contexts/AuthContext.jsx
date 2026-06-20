@@ -1,6 +1,7 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { api } from '../Services/api';
+import { sessionUtils } from '../utils/sessionUtils';
 
 const AuthContext = createContext();
 
@@ -10,9 +11,14 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('userData');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
+        if (sessionUtils.isSessionValid()) {
+            const storedUser = localStorage.getItem('userData');
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+        } else {
+            sessionUtils.clearSession();
+            setUser(null);
         }
         setLoading(false);
     }, []);
@@ -22,7 +28,10 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         try {
             const response = await api.post('/token/', { username, password });
+
             localStorage.setItem('access_token', response.access);
+
+            sessionUtils.startSession();
 
             if (response.user) {
                 localStorage.setItem('userData', JSON.stringify(response.user));
@@ -43,12 +52,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('userData');
+        sessionUtils.clearSession();
         setUser(null);
     };
 
-    const isAuthenticated = !!localStorage.getItem('access_token');
+    const isAuthenticated = sessionUtils.isSessionValid();
 
     return (
         <AuthContext.Provider value={{
@@ -59,6 +67,7 @@ export const AuthProvider = ({ children }) => {
             logout,
             isAuthenticated,
             setError,
+            sessionUtils,
         }}>
             {children}
         </AuthContext.Provider>

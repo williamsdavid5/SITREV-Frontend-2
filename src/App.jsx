@@ -10,6 +10,7 @@ import Motoristas from './pages/Motoristas';
 import PaginaErro from './pages/PaginaErro';
 import SitrevLogo from './assets/SITREV_TEXT.svg'
 import RotaProtegida from './pages/components/RotaProtegida';
+import { sessionUtils } from './utils/sessionUtils';
 
 function App() {
   const [menuAberto, setMenuAberto] = useState(false);
@@ -21,14 +22,38 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // 🔥 LISTENER DE ATIVIDADE DO USUÁRIO (renova o timestamp)
+  useEffect(() => {
+    const events = ['click', 'keydown', 'scroll', 'mousemove', 'touchstart'];
+
+    const handleActivity = () => {
+      sessionUtils.updateActivity();
+    };
+
+    events.forEach(event => {
+      document.addEventListener(event, handleActivity);
+    });
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, handleActivity);
+      });
+    };
+  }, []);
+
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     const userData = localStorage.getItem('userData');
 
-    if (token && userData) {
+    if (token && userData && !sessionUtils.isSessionExpired()) {
       setLogado(true);
-      setDadosUsuario({ nomeUsuario: JSON.parse(userData).username })
+      setDadosUsuario({ nomeUsuario: JSON.parse(userData).username });
+      setJanelaLogin(false);
     } else {
+      if (token && sessionUtils.isSessionExpired()) {
+        sessionUtils.clearSession();
+      }
       setLogado(false);
       setJanelaLogin(true);
     }
@@ -41,9 +66,24 @@ function App() {
     }
   }, [location, navigate]);
 
+  useEffect(() => {
+    if (!logado) return;
+
+    const interval = setInterval(() => {
+      if (sessionUtils.isSessionExpired()) {
+        sessionUtils.clearSession();
+        setLogado(false);
+        setJanelaLogin(true);
+        alert('Sessão expirada por inatividade. Faça login novamente.');
+        navigate('/');
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [logado, navigate]);
+
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('userData');
+    sessionUtils.clearSession();
     setLogado(false);
     setDadosUsuario({ nomeUsuario: '', email: '' });
     setJanelaLogin(true);
@@ -62,7 +102,6 @@ function App() {
     const userData = localStorage.getItem('userData');
     if (userData) {
       setDadosUsuario({ nomeUsuario: JSON.parse(userData).username });
-
       setLogado(true);
     }
     setJanelaLogin(false);
