@@ -6,14 +6,17 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import { MotoristasProvider } from './contexts/MotoristasContext.jsx'
+import { VeiculosProvider } from './contexts/VeiculosContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <MotoristasProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <VeiculosProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </VeiculosProvider>
       </MotoristasProvider>
     </AuthProvider>
   </StrictMode>,
