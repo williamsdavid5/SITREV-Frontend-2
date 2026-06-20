@@ -5,13 +5,16 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 
 import { AuthProvider } from './contexts/AuthContext.jsx'
+import { MotoristasProvider } from './contexts/MotoristasContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <MotoristasProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </MotoristasProvider>
     </AuthProvider>
   </StrictMode>,
 )

@@ -1,5 +1,5 @@
 
-const SESSION_DURATION = 5 * 60 * 1000;
+const SESSION_DURATION = 60 * 60 * 1000;
 
 export const sessionUtils = {
     updateActivity() {
