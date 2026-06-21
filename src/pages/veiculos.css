@@ -127,6 +127,22 @@
     padding-right: 7px;
 }
 
+.loading-veiculos,
+.error-veiculos,
+.vazio-veiculos {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loading-veiculos img {
+    object-fit: contain;
+    width: 60px;
+}
+
 @media (max-width: 1300px) {
     .esquerdaVeiculos {
         width: 40dvw;

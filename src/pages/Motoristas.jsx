@@ -4,6 +4,8 @@ import FotoMotorista from '../assets/motoristaFoto.png'
 import { formatarDataHora } from "../utils/functions";
 import { useMotoristas } from "../contexts/MotoristasContext";
 
+import LoadingGif from '../assets/loadingGif.gif'
+
 export default function Motoristas() {
     useEffect(() => {
         document.title = "SITREV - Motoristas";
@@ -55,7 +57,10 @@ export default function Motoristas() {
                 </section>
                 <section className={`blocosMotoristas`}>
                     {loading ? (
-                        <div className="loading-motoristas">Carregando motoristas...</div>
+                        <div className="loading-veiculos">
+                            <img src={LoadingGif} alt="" />
+                            Carregando motoristas...
+                        </div>
                     ) : error ? (
                         <div className="error-motoristas">
                             <p>{error}</p>

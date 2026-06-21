@@ -1,3 +1,4 @@
+
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -7,39 +8,75 @@ import './registros.css'
 import Mapa from "./components/Mapa";
 import { vehicleIcon, pontoPercursoIcon, starPercursotIcon, alertIcon, iconeNumero } from './components/Icones';
 import PopupInfo from './components/PopupInfo';
-
-import viajensLimpo from '../data/listaViagens';
-import viajens from "../data/rastreamento";
+import LoadingGif from '../assets/loadingGif.gif'
 
 import { formatarDataHora } from "../utils/functions";
+import { useViagens } from '../contexts/ViagensContext';
 
 export default function Registros() {
-    const [viajensLista, setViagensLista] = useState();
-    const [viagemTeste, setViagemTeste] = useState();
-    const [dadosRota, setDadosRota] = useState(null);
+    const {
+        viagens,
+        loading,
+        error,
+        buscarViagens,
+        recarregar,
+        searchTerm,
+        viagemSelecionada,
+        selecionarViagem,
+        processarRastroGPS,
+        limparSelecao
+    } = useViagens();
 
+    const [buscaLocal, setBuscaLocal] = useState('');
     const [tipoPesquisa, setTipoPesquisa] = useState(1);
-
     const [menuLateral, setMenuLateral] = useState(true);
     const [itemSelecionado, setItemSelecionado] = useState(0);
+    const [dadosRota, setDadosRota] = useState(null);
 
     useEffect(() => {
         document.title = "SITREV - Registros";
-        setViagensLista(viajensLimpo);
-        setViagemTeste(viajens[3]);
-    }, [])
+        recarregar();
+    }, []);
 
-    //quando um item é selecionado, a rota é definida no estado para que o mapa possa renderizar o polyline
     useEffect(() => {
-        if (viagemTeste && itemSelecionado != 0) {
-            const rotaCoordenadas = viagemTeste.registros.map(reg => [
-                parseFloat(reg.latitude),
-                parseFloat(reg.longitude)
-            ]);
+        const timeoutId = setTimeout(() => {
+            if (buscaLocal !== searchTerm) {
+                buscarViagens(buscaLocal);
+            }
+        }, 500);
 
-            setDadosRota(rotaCoordenadas);
+        return () => clearTimeout(timeoutId);
+    }, [buscaLocal, buscarViagens, searchTerm]);
+
+    useEffect(() => {
+        if (itemSelecionado !== 0) {
+            const viagem = viagens.find(v => v.id === itemSelecionado);
+            if (viagem) {
+                selecionarViagem(viagem);
+                const coordenadas = processarRastroGPS(viagem.rastro_gps);
+                if (coordenadas.length > 0) {
+                    setDadosRota(coordenadas);
+                } else {
+                    setDadosRota(null);
+                }
+            }
+        } else {
+            limparSelecao();
+            setDadosRota(null);
         }
-    }, [itemSelecionado, viagemTeste])
+    }, [itemSelecionado, viagens, selecionarViagem, processarRastroGPS, limparSelecao]);
+
+    useEffect(() => {
+        if (!menuLateral) {
+
+        }
+    }, [menuLateral]);
+
+    const handleLimparFiltros = () => {
+        setBuscaLocal('');
+        setTipoPesquisa(1);
+        recarregar();
+    };
 
     return (
         <>
@@ -67,93 +104,140 @@ export default function Registros() {
                                 ❮
                             </button>
                         </span>
-                        {tipoPesquisa == 1 ?
-                            <>
-                                <input type="text" placeholder="Pesquise qualquer coisa" />
-                            </> : <>
-                                <div className="inputsPeriodo">
-                                    <input type="text" name="" id="" placeholder="DD/MM/AAAA" />
-                                    <p className="">a</p>
-                                    <input type="text" name="" id="" placeholder="DD/MM/AAAA" />
-                                </div>
-                            </>
-                        }
+                        {tipoPesquisa == 1 ? (
+                            <input
+                                type="text"
+                                placeholder="Pesquisar por veículo, motorista ou placa..."
+                                value={buscaLocal}
+                                onChange={(e) => setBuscaLocal(e.target.value)}
+                            />
+                        ) : (
+                            <div className="inputsPeriodo">
+                                <input type="text" name="" id="" placeholder="DD/MM/AAAA" />
+                                <p className="">a</p>
+                                <input type="text" name="" id="" placeholder="DD/MM/AAAA" />
+                            </div>
+                        )}
                         <p className="pMenor">Tipo de filtragem</p>
                         <div className="inputsPeriodo">
-                            <select name="tipoPesquisa" id="tipoPesquisaInput" value={tipoPesquisa} onChange={(e) => setTipoPesquisa(e.target.value)}>
+                            <select
+                                name="tipoPesquisa"
+                                id="tipoPesquisaInput"
+                                value={tipoPesquisa}
+                                onChange={(e) => setTipoPesquisa(Number(e.target.value))}
+                            >
                                 <option value="1">Barra de pesquisa</option>
                                 <option value="2">Período</option>
                             </select>
-                            <button>Limpar filtros</button>
+                            <button onClick={handleLimparFiltros}>Limpar filtros</button>
                         </div>
                     </section>
                     <section className="listaJanela">
-                        {viajensLista?.map((viagem, index) => {
-                            return (
-                                <div className="itemViagemLista" key={index} onClick={() => {
-                                    setItemSelecionado(viagem.id);
-                                }}>
-                                    <p>
-                                        <b>Veículo:</b> {viagem.modelo_veiculo} ({viagem.identificador_veiculo}) <br />
-                                        <b>Motorista: </b> {viagem.nome_motorista} <br />
-                                        <b>Ultimo registro: </b> {formatarDataHora(viagem.ultimo_registro)}
-                                    </p>
-                                    {itemSelecionado == viagem.id && (
-                                        <button
-                                            className="botaoExibirPercurso"
-                                            onClick={() => setMenuLateral(false)}
-                                        >Exibir percurso</button>
-                                    )}
-                                </div>
-                            )
-                        })}
+                        {loading ? (
+                            <div className="loading-viagens">
+                                <img src={LoadingGif} alt="" />
+                                Carregando viagens...
+                            </div>
+                        ) : error ? (
+                            <div className="error-viagens">
+                                <p>{error}</p>
+                                <button onClick={() => recarregar()}>Tentar novamente</button>
+                            </div>
+                        ) : viagens.length === 0 ? (
+                            <div className="vazio-viagens">
+                                <p>Nenhuma viagem encontrada.</p>
+                                {searchTerm && <p>Tente buscar por outro termo.</p>}
+                            </div>
+                        ) : (
+                            viagens.map((viagem) => {
+                                const emAndamento = !viagem.fim_viagem;
+                                const duracao = emAndamento
+                                    ? 'Em andamento'
+                                    : viagem.duracao
+                                        ? `${viagem.duracao}h`
+                                        : '--';
+
+                                return (
+                                    <div
+                                        className={`itemViagemLista ${itemSelecionado === viagem.id && 'itemAtivo'}`}
+                                        key={viagem.id}
+                                        onClick={() => {
+                                            setItemSelecionado(viagem.id);
+                                        }}
+                                    >
+                                        <p>
+                                            <b>Veículo:</b> {viagem.veiculo_modelo} ({viagem.veiculo_placa}) <br />
+                                            <b>Motorista:</b> {viagem.motorista_nome} <br />
+                                            <b>Início:</b> {formatarDataHora(viagem.inicio_viagem)} <br />
+                                            {!emAndamento && (
+                                                <>
+                                                    <b>Fim:</b> {formatarDataHora(viagem.fim_viagem)} <br />
+                                                </>
+                                            )}
+                                            <b>Duração:</b> {duracao}
+                                            {emAndamento && (
+                                                <span className="status-em-andamento"> 🟢 Em andamento</span>
+                                            )}
+                                        </p>
+                                        {itemSelecionado === viagem.id && (
+                                            <button
+                                                className="botaoExibirPercurso"
+                                                onClick={() => setMenuLateral(false)}
+                                            >
+                                                Exibir percurso
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })
+                        )}
                     </section>
                 </aside>
                 <section className="direitajanela">
                     <Mapa dadosRota={dadosRota}>
-                        {viagemTeste && itemSelecionado && (() => {
-                            const registros = viagemTeste.registros;
-                            const ultimoRegistro = registros[registros.length - 1];
+                        {viagemSelecionada && (() => {
+                            const coordenadas = processarRastroGPS(viagemSelecionada.rastro_gps);
 
-                            const posicaoVeiculo = [
-                                parseFloat(ultimoRegistro.latitude),
-                                parseFloat(ultimoRegistro.longitude)
-                            ];
+                            if (!coordenadas || coordenadas.length === 0) return null;
+
+                            const ultimaPosicao = coordenadas[coordenadas.length - 1];
 
                             return (
                                 <>
-                                    {registros.slice(0, -1).map((reg, index) => {
+                                    {coordenadas.slice(0, -1).map((coord, index) => {
                                         const isFirst = index === 0;
                                         const iconeNumerado = iconeNumero(index + 1);
 
                                         return (
                                             <Marker
-                                                key={reg.id}
-                                                position={[parseFloat(reg.latitude), parseFloat(reg.longitude)]}
+                                                key={index}
+                                                position={coord}
                                                 icon={isFirst ? starPercursotIcon : iconeNumerado}
                                             >
                                                 <Popup>
-                                                    <PopupInfo
-                                                        tipo={isFirst ? 'inicio' : 'ponto'}
-                                                        viagem={viagemTeste}
-                                                        pontoNumero={index + 1}
-                                                        posicaoVeiculo={posicaoVeiculo}
-                                                    />
+                                                    <div>
+                                                        <b>{isFirst ? 'Início' : `Ponto ${index + 1}`}</b>
+                                                        <p>Lat: {coord[0].toFixed(6)}</p>
+                                                        <p>Lng: {coord[1].toFixed(6)}</p>
+                                                    </div>
                                                 </Popup>
                                             </Marker>
                                         );
                                     })}
 
                                     <Marker
-                                        position={posicaoVeiculo}
+                                        position={ultimaPosicao}
                                         icon={vehicleIcon}
                                     >
                                         <Popup>
-                                            <PopupInfo
-                                                tipo="veiculo"
-                                                viagem={viagemTeste}
-                                                posicaoVeiculo={posicaoVeiculo}
-                                            />
+                                            <div>
+                                                <b>Posição atual</b>
+                                                <p>Veículo: {viagemSelecionada.veiculo_modelo}</p>
+                                                <p>Placa: {viagemSelecionada.veiculo_placa}</p>
+                                                <p>Motorista: {viagemSelecionada.motorista_nome}</p>
+                                                <p>Lat: {ultimaPosicao[0].toFixed(6)}</p>
+                                                <p>Lng: {ultimaPosicao[1].toFixed(6)}</p>
+                                            </div>
                                         </Popup>
                                     </Marker>
                                 </>

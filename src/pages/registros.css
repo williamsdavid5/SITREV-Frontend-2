@@ -104,6 +104,22 @@
     display: none;
 }
 
+.loading-viagens,
+.error-viagens,
+.vazio-viagens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loading-viagens img {
+    object-fit: contain;
+    width: 60px;
+}
+
 .botaoExibirPercurso {
     width: 100%;
     margin-top: 10px;

@@ -9,6 +9,8 @@ import Mapa from "./components/Mapa";
 import { vehicleIcon, pontoPercursoIcon, starPercursotIcon, alertIcon, iconeNumero } from './components/Icones';
 import PopupInfo from './components/PopupInfo';
 
+import LoadingGif from '../assets/loadingGif.gif'
+
 import { formatarDataHora } from "../utils/functions";
 import { useVeiculos } from '../contexts/VeiculosContext';
 
@@ -200,7 +202,10 @@ export default function Veiculos() {
                     </section>
                     <section className="listaJanela listaJanelaVeiculo">
                         {loading ? (
-                            <div className="loading-veiculos">Carregando veículos...</div>
+                            <div className="loading-veiculos">
+                                <img src={LoadingGif} alt="" />
+                                Carregando veículos...
+                            </div>
                         ) : error ? (
                             <div className="error-veiculos">
                                 <p>{error}</p>
