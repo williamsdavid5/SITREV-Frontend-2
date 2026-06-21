@@ -129,10 +129,13 @@ function App() {
               'Login'
             )}
           </button>
-          <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
+          {/* <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
             Início
           </NavLink>
           <NavLink to="/registros" onClick={() => setMenuAberto(false)}>
+            Registros
+          </NavLink> */}
+          <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
             Registros
           </NavLink>
           <NavLink to="/veiculos" onClick={() => setMenuAberto(false)}>
@@ -147,8 +150,8 @@ function App() {
 
       <main className='mainPrincipal'>
         <Routes>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/registros" element={
+          {/* <Route path="/" element={<Inicio />} /> */}
+          <Route path="/" element={
             <RotaProtegida>
               <Registros />
             </RotaProtegida>
