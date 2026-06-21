@@ -1,4 +1,4 @@
-
+// contexts/VeiculosContext.jsx
 import React, { createContext, useState, useContext, useCallback } from 'react';
 import { api } from '../Services/api';
 
@@ -32,7 +32,6 @@ export const VeiculosProvider = ({ children }) => {
         }
     }, []);
 
-
     const buscarVeiculos = useCallback(async (termo) => {
         setSearchTerm(termo);
         return await listarVeiculos(termo);
@@ -65,6 +64,51 @@ export const VeiculosProvider = ({ children }) => {
             setViagensVeiculo([]);
         }
     }, [buscarViagensVeiculo]);
+
+    const adicionarVeiculo = useCallback(async (dados) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const formData = new FormData();
+            formData.append('modelo', dados.modelo);
+            formData.append('placa', dados.placa);
+
+            if (dados.imagem) {
+                formData.append('imagem', dados.imagem);
+            }
+
+            const response = await api.post('/veiculos/', formData);
+
+            await recarregar();
+            return { success: true, data: response };
+        } catch (error) {
+            setError(error.message);
+            return { success: false, error: error.message };
+        } finally {
+            setLoading(false);
+        }
+    }, [recarregar]);
+
+    const deletarVeiculo = useCallback(async (veiculoId) => {
+        setLoading(true);
+        setError(null);
+        try {
+            await api.delete(`/veiculos/${veiculoId}/`);
+
+            setVeiculos(prev => prev.filter(v => v.id !== veiculoId));
+
+            if (veiculoSelecionado?.id === veiculoId) {
+                limparSelecao();
+            }
+
+            return { success: true };
+        } catch (error) {
+            setError(error.message);
+            return { success: false, error: error.message };
+        } finally {
+            setLoading(false);
+        }
+    }, [veiculoSelecionado]);
 
     const processarRastroGPS = useCallback((rastroGps) => {
         if (!rastroGps) return [];
@@ -101,6 +145,8 @@ export const VeiculosProvider = ({ children }) => {
             recarregar,
             buscarViagensVeiculo,
             selecionarVeiculo,
+            adicionarVeiculo,
+            deletarVeiculo,
             processarRastroGPS,
             limparSelecao,
             setError,

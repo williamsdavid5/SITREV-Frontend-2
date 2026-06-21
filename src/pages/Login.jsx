@@ -3,6 +3,7 @@ import './login.css'
 import Logo from '../assets/SITREV LOGO.png'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import LoadingGif from '../assets/loadingGif.gif'
 
 export default function Login({ setJanela, onLoginSuccess }) {
     const [username, setUsername] = useState('');
@@ -93,6 +94,11 @@ export default function Login({ setJanela, onLoginSuccess }) {
                     >
                         {loading ? 'Entrando...' : 'Entrar'}
                     </button>
+                    {loading && (
+                        <>
+                            <img src={LoadingGif} style={{ width: '40px' }} alt="" />
+                        </>
+                    )}
                     <p>Atenção: mantenha a confidencialidade desses dados!</p>
                 </section>
                 <section className='imagemDecorativa'>

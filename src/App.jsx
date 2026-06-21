@@ -121,9 +121,8 @@ function App() {
           <button className='botaoLogin' onClick={toggleLogin}>
             {logado ? (
               <span>
-                <p>Usuário logado</p>
-                <b>{dadoUsuario.nomeUsuario}</b> <br />
-                <p className='p'></p>
+                <p>Usuário: <b>{dadoUsuario.nomeUsuario}</b></p>
+                <p className='p'>Clique para sair</p>
               </span>
             ) : (
               'Login'

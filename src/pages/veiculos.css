@@ -143,6 +143,44 @@
     width: 60px;
 }
 
+.botaoNovoVeiculo {
+    margin: 5px 0px;
+}
+
+.botaoExcluirVeiculo {
+    margin-top: 10px;
+    background-color: red;
+    width: 60%;
+}
+
+.janelaNovoVeiculo {
+    width: 100%;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.janelaNovoVeiculo input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.janelaNovoVeiculo button {
+    margin-top: 10px;
+    flex: 1;
+}
+
+.spanBotoesNovo {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+}
+
 @media (max-width: 1300px) {
     .esquerdaVeiculos {
         width: 40dvw;

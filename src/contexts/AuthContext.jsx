@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [permissao, setPermissao] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -32,7 +33,6 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('access_token', response.access);
 
             sessionUtils.startSession();
-
             if (response.user) {
                 localStorage.setItem('userData', JSON.stringify(response.user));
                 setUser(response.user);
@@ -40,6 +40,11 @@ export const AuthProvider = ({ children }) => {
                 const userData = { username };
                 localStorage.setItem('userData', JSON.stringify(userData));
                 setUser(userData);
+            }
+
+            if (response.role) {
+                localStorage.setItem('permissao', response.role);
+                setPermissao(response.role);
             }
 
             return { success: true, data: response };
@@ -50,7 +55,6 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
-
     const logout = () => {
         sessionUtils.clearSession();
         setUser(null);

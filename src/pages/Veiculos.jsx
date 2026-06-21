@@ -106,7 +106,9 @@ export default function Veiculos() {
         selecionarVeiculo,
         processarRastroGPS,
         veiculoSelecionado,
-        limparSelecao
+        limparSelecao,
+        adicionarVeiculo,
+        deletarVeiculo
     } = useVeiculos();
 
     const [buscaLocal, setBuscaLocal] = useState('');
@@ -115,10 +117,25 @@ export default function Veiculos() {
     const [modalMaisInformacoes, setModalMaisInformacoes] = useState(false);
     const [dadosRota, setDadosRota] = useState(null);
     const [posicaoVeiculo, setPosicaoVeiculo] = useState(null);
+    const [permissao, setPermissao] = useState(localStorage.getItem("permissao"));
+
+    const [mostrarNovoVeiculo, setMostrarNovoVeiculo] = useState(false);
+    const [novoModelo, setNovoModelo] = useState('');
+    const [novaPlaca, setNovaPlaca] = useState('');
+    const [submetendo, setSubmetendo] = useState(false);
+    const [erroForm, setErroForm] = useState('');
 
     useEffect(() => {
         document.title = "SITREV - Veículos";
         recarregar();
+    }, []);
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            setPermissao(localStorage.getItem("permissao"));
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
     useEffect(() => {
@@ -150,6 +167,66 @@ export default function Veiculos() {
             setPosicaoVeiculo(null);
         }
     }, [itemSelecionado, selecionarVeiculo, processarRastroGPS, limparSelecao]);
+
+
+    const handleAdicionarVeiculo = async (e) => {
+        e.preventDefault();
+        setErroForm('');
+
+        if (!novoModelo.trim()) {
+            setErroForm('O campo modelo é obrigatório');
+            return;
+        }
+        if (!novaPlaca.trim()) {
+            setErroForm('O campo placa é obrigatório');
+            return;
+        }
+
+        setSubmetendo(true);
+        try {
+            const result = await adicionarVeiculo({
+                modelo: novoModelo.trim(),
+                placa: novaPlaca.trim().toUpperCase()
+            });
+
+            if (result.success) {
+                setNovoModelo('');
+                setNovaPlaca('');
+                setMostrarNovoVeiculo(false);
+                setErroForm('');
+                alert('Veículo adicionado com sucesso!');
+            } else {
+                setErroForm(result.error || 'Erro ao adicionar veículo');
+                console.error('Erro detalhado:', result.error);
+            }
+        } catch (err) {
+            console.error('Erro na requisição:', err);
+            setErroForm(err.message || 'Erro ao adicionar veículo');
+        } finally {
+            setSubmetendo(false);
+        }
+    };
+
+    const handleDeletarVeiculo = async (veiculo) => {
+        if (!window.confirm(`Tem certeza que deseja excluir o veículo ${veiculo.modelo} - ${veiculo.placa}?`)) {
+            return;
+        }
+
+        const result = await deletarVeiculo(veiculo.id);
+        if (result.success) {
+            alert('Veículo excluído com sucesso!');
+            setItemSelecionado({ id: 0 });
+        } else {
+            alert(result.error || 'Erro ao excluir veículo');
+        }
+    };
+
+    const handleCancelarNovo = () => {
+        setMostrarNovoVeiculo(false);
+        setNovoModelo('');
+        setNovaPlaca('');
+        setErroForm('');
+    };
 
     const getTipoVeiculo = (veiculo) => {
         if (veiculo.tipo_veiculo) {
@@ -183,6 +260,14 @@ export default function Veiculos() {
                         <span className='espacoEntre'>
                             <span>
                                 <h2>Veículos</h2>
+                                {permissao === "administrador" && (
+                                    <button
+                                        className='botaoNovoVeiculo'
+                                        onClick={() => setMostrarNovoVeiculo(!mostrarNovoVeiculo)}
+                                    >
+                                        {mostrarNovoVeiculo ? '✕ Fechar' : 'Novo veículo'}
+                                    </button>
+                                )}
                                 <p className="pMenor">
                                     Localize todos os veículos cadastrados no sistema
                                 </p>
@@ -193,6 +278,41 @@ export default function Veiculos() {
                                 ❮
                             </button>
                         </span>
+
+                        {mostrarNovoVeiculo && permissao === "administrador" && (
+                            <form onSubmit={handleAdicionarVeiculo} className='janelaNovoVeiculo'>
+                                {erroForm && (
+                                    <div className="erro-form">{erroForm}</div>
+                                )}
+                                <p className='pMenor'>Modelo:*</p>
+                                <input
+                                    type="text"
+                                    placeholder='Digite o modelo'
+                                    value={novoModelo}
+                                    onChange={(e) => setNovoModelo(e.target.value)}
+                                    disabled={submetendo}
+                                    required
+                                />
+                                <p className='pMenor'>Placa:*</p>
+                                <input
+                                    type="text"
+                                    placeholder='Digite a placa (ex: ABC1B23)'
+                                    value={novaPlaca}
+                                    onChange={(e) => setNovaPlaca(e.target.value.toUpperCase())}
+                                    disabled={submetendo}
+                                    required
+                                />
+                                <span className='spanBotoesNovo'>
+                                    <button type="submit" disabled={submetendo}>
+                                        {submetendo ? 'Salvando...' : 'Salvar'}
+                                    </button>
+                                    <button type="button" onClick={handleCancelarNovo} disabled={submetendo}>
+                                        Cancelar
+                                    </button>
+                                </span>
+                            </form>
+                        )}
+
                         <input
                             type="text"
                             placeholder="Pesquisar por modelo ou placa..."
@@ -253,6 +373,14 @@ export default function Veiculos() {
                                                         className='botaoExibirPercurso botaoMaisInfor'
                                                         onClick={() => setModalMaisInformacoes(true)}
                                                     >Mais informações</button>
+                                                    {permissao === "administrador" && (
+                                                        <button
+                                                            className='botaoMaisInfor botaoExcluirVeiculo'
+                                                            onClick={() => handleDeletarVeiculo(veiculo)}
+                                                        >
+                                                            Excluir veículo
+                                                        </button>
+                                                    )}
                                                 </>
                                             )}
                                         </span>
