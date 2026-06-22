@@ -83,7 +83,69 @@
 
 .inputPesquisaMotorista {
     width: 500px;
+    /* margin-top: 10px; */
+}
+
+.blocoNovoMotorista {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: auto;
+    /* background-color: var(--auxiliar2); */
+}
+
+.blocoNovoMotorista:hover {
+    background-color: var(--fundo) !important;
+}
+
+.botaoAdicionar {
+    width: 60px;
+    height: 60px;
+    border-radius: 200px;
+    background-color: var;
+    font-size: 30px;
+    color: black;
+}
+
+.botaoAdicionar {
+    background-color: white;
+}
+
+.blocoNovoMotorista input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.blocoNovoMotorista span {
+    display: flex;
+    gap: 5px;
+    width: 80%;
     margin-top: 10px;
+}
+
+.blocoNovoMotorista span button {
+    flex: 1;
+    height: 30px;
+}
+
+.botoesItemMotorista {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.botoesItemMotorista button {
+    flex: 1;
+}
+
+.botaoExcluir {
+    background-color: red;
+}
+
+.auxTopoMotoristas {
+    gap: 10px;
 }
 
 @media (max-width: 900px) {

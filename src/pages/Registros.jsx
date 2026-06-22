@@ -104,7 +104,7 @@ export default function Registros() {
                                 ❮
                             </button>
                         </span>
-                        {tipoPesquisa == 1 ? (
+                        {/* {tipoPesquisa == 1 ? (
                             <input
                                 type="text"
                                 placeholder="Pesquisar por veículo, motorista ou placa..."
@@ -130,7 +130,13 @@ export default function Registros() {
                                 <option value="2">Período</option>
                             </select>
                             <button onClick={handleLimparFiltros}>Limpar filtros</button>
-                        </div>
+                        </div> */}
+                        <input
+                            type="text"
+                            placeholder="Pesquisar por veículo, motorista ou placa..."
+                            value={buscaLocal}
+                            onChange={(e) => setBuscaLocal(e.target.value)}
+                        />
                     </section>
                     <section className="listaJanela">
                         {loading ? (

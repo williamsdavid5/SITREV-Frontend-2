@@ -269,7 +269,7 @@ export default function Veiculos() {
                                     </button>
                                 )}
                                 <p className="pMenor">
-                                    Localize todos os veículos cadastrados no sistema
+                                    Localize todos os veículos cadastrados no sistema. Selecione um veículo para ver as opções.
                                 </p>
                             </span>
                             <button
