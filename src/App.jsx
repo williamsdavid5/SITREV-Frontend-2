@@ -7,6 +7,7 @@ import Inicio from './pages/Inicio';
 import Registros from './pages/Registros';
 import Veiculos from './pages/Veiculos';
 import Motoristas from './pages/Motoristas';
+import Usuarios from './pages/Usuarios';
 import PaginaErro from './pages/PaginaErro';
 import SitrevLogo from './assets/SITREV_TEXT.svg'
 import RotaProtegida from './pages/components/RotaProtegida';
@@ -18,6 +19,7 @@ function App() {
   const [logado, setLogado] = useState(false);
   const [dadoUsuario, setDadosUsuario] = useState({ nomeUsuario: '', email: '' });
   const [carregando, setCarregando] = useState(true);
+  const [permissao, setPermissao] = useState(localStorage.getItem('permissao'));
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -100,6 +102,7 @@ function App() {
 
   const handleLoginSuccess = () => {
     const userData = localStorage.getItem('userData');
+    setPermissao(localStorage.getItem('permissao'));
     if (userData) {
       setDadosUsuario({ nomeUsuario: JSON.parse(userData).username });
       setLogado(true);
@@ -143,6 +146,11 @@ function App() {
           <NavLink to="/motoristas" onClick={() => setMenuAberto(false)}>
             Motoristas
           </NavLink>
+          {permissao == 'administrador' && (
+            <NavLink to="/usuarios" onClick={() => setMenuAberto(false)}>
+              Usuários
+            </NavLink>
+          )}
         </nav>
         <img src={SitrevLogo} alt="SITREV" />
       </header>
@@ -163,6 +171,11 @@ function App() {
           <Route path="/motoristas" element={
             <RotaProtegida>
               <Motoristas />
+            </RotaProtegida>
+          } />
+          <Route path="/usuarios" element={
+            <RotaProtegida>
+              <Usuarios />
             </RotaProtegida>
           } />
           <Route path="*" element={<Navigate to="/" replace />} />
