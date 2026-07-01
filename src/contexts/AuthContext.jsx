@@ -1,5 +1,4 @@
-
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { api } from '../Services/api';
 import { sessionUtils } from '../utils/sessionUtils';
 
@@ -12,16 +11,35 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (sessionUtils.isSessionValid()) {
-            const storedUser = localStorage.getItem('userData');
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
+        const loadUser = () => {
+            if (sessionUtils.isSessionValid()) {
+                const storedUser = localStorage.getItem('userData');
+                const storedPermissao = localStorage.getItem('permissao');
+                if (storedUser) {
+                    setUser(JSON.parse(storedUser));
+                }
+                if (storedPermissao) {
+                    setPermissao(storedPermissao);
+                }
+            } else {
+                sessionUtils.clearSession();
+                setUser(null);
+                setPermissao(null);
             }
-        } else {
-            sessionUtils.clearSession();
+            setLoading(false);
+        };
+
+        loadUser();
+
+        const handleLogout = () => {
             setUser(null);
-        }
-        setLoading(false);
+            setPermissao(null);
+        };
+        window.addEventListener('logout', handleLogout);
+
+        return () => {
+            window.removeEventListener('logout', handleLogout);
+        };
     }, []);
 
     const login = async (username, password) => {
@@ -31,8 +49,8 @@ export const AuthProvider = ({ children }) => {
             const response = await api.post('/token/', { username, password });
 
             localStorage.setItem('access_token', response.access);
-
             sessionUtils.startSession();
+
             if (response.user) {
                 localStorage.setItem('userData', JSON.stringify(response.user));
                 setUser(response.user);
@@ -55,10 +73,13 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    const logout = () => {
+
+    const logout = useCallback(() => {
         sessionUtils.clearSession();
         setUser(null);
-    };
+        setPermissao(null);
+        window.dispatchEvent(new Event('logout'));
+    }, []);
 
     const isAuthenticated = sessionUtils.isSessionValid();
 
@@ -70,8 +91,8 @@ export const AuthProvider = ({ children }) => {
             login,
             logout,
             isAuthenticated,
+            permissao,
             setError,
-            sessionUtils,
         }}>
             {children}
         </AuthContext.Provider>

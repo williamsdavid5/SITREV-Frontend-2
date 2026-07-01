@@ -1,14 +1,14 @@
-
 import { sessionUtils } from '../utils/sessionUtils';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+let redirecionando = false;
 
 export const apiRequest = async (endpoint, options = {}) => {
 
     if (sessionUtils.isSessionExpired()) {
         sessionUtils.clearSession();
         window.dispatchEvent(new Event('logout'));
-        window.location.href = '/';
         throw new Error('Sessão expirada. Faça login novamente.');
     }
 
@@ -40,7 +40,15 @@ export const apiRequest = async (endpoint, options = {}) => {
         if (response.status === 401) {
             sessionUtils.clearSession();
             window.dispatchEvent(new Event('logout'));
-            window.location.href = '/';
+
+            window.dispatchEvent(new CustomEvent('apiError', {
+                detail: {
+                    status: 401,
+                    message: 'Sessão inválida. Faça login novamente.',
+                    endpoint: endpoint
+                }
+            }));
+
             throw new Error('Sessão inválida. Faça login novamente.');
         }
 
@@ -49,11 +57,30 @@ export const apiRequest = async (endpoint, options = {}) => {
             return null;
         }
 
-        const data = await response.json();
+        const contentType = response.headers.get('content-type');
+        let data;
+
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Resposta não é JSON. Status:', response.status);
+            console.error('Primeiros 200 caracteres da resposta:', text.substring(0, 200));
+
+            if (response.status === 500) {
+                throw new Error('Erro interno do servidor (500). O endpoint pode não estar implementado ou há um erro no backend.');
+            }
+
+            throw new Error(`Erro ${response.status}: O servidor retornou uma resposta não-JSON. Verifique se o endpoint existe.`);
+        }
 
         if (!response.ok) {
             console.error('Erro do backend:', data);
-            throw new Error(data.message || data.detail || data.error || 'Erro na requisição');
+            if (response.status === 500) {
+                throw new Error('Erro interno do servidor (500). Verifique os logs do backend.');
+            }
+
+            throw new Error(data.message || data.detail || data.error || `Erro ${response.status} na requisição`);
         }
 
         sessionUtils.updateActivity();

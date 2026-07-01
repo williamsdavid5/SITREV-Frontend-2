@@ -1,30 +1,27 @@
 // App.jsx
-import { useState, useEffect } from 'react'
-import './App.css'
-import { Routes, Route, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import './App.css';
+import { Routes, Route, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Inicio from './pages/Inicio';
 import Registros from './pages/Registros';
 import Veiculos from './pages/Veiculos';
 import Motoristas from './pages/Motoristas';
 import Usuarios from './pages/Usuarios';
 import PaginaErro from './pages/PaginaErro';
-import SitrevLogo from './assets/SITREV_TEXT.svg'
+import SitrevLogo from './assets/SITREV_TEXT.svg';
 import RotaProtegida from './pages/components/RotaProtegida';
 import { sessionUtils } from './utils/sessionUtils';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [janelaLogin, setJanelaLogin] = useState(false);
-  const [logado, setLogado] = useState(false);
-  const [dadoUsuario, setDadosUsuario] = useState({ nomeUsuario: '', email: '' });
   const [carregando, setCarregando] = useState(true);
-  const [permissao, setPermissao] = useState(localStorage.getItem('permissao'));
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout, permissao, loading: authLoading } = useAuth();
 
-  // 🔥 LISTENER DE ATIVIDADE DO USUÁRIO (renova o timestamp)
   useEffect(() => {
     const events = ['click', 'keydown', 'scroll', 'mousemove', 'touchstart'];
 
@@ -43,25 +40,18 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!authLoading) {
+      setCarregando(false);
+      if (!isAuthenticated) {
+        setJanelaLogin(true);
+      } else {
+        setJanelaLogin(false);
+      }
+    }
+  }, [isAuthenticated, authLoading]);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userData = localStorage.getItem('userData');
-
-    if (token && userData && !sessionUtils.isSessionExpired()) {
-      setLogado(true);
-      setDadosUsuario({ nomeUsuario: JSON.parse(userData).username });
-      setJanelaLogin(false);
-    } else {
-      if (token && sessionUtils.isSessionExpired()) {
-        sessionUtils.clearSession();
-      }
-      setLogado(false);
-      setJanelaLogin(true);
-    }
-
-    setCarregando(false);
-
     if (location.state?.abrirLogin) {
       setJanelaLogin(true);
       navigate(location.pathname, { replace: true, state: {} });
@@ -69,12 +59,12 @@ function App() {
   }, [location, navigate]);
 
   useEffect(() => {
-    if (!logado) return;
+    if (!isAuthenticated) return;
 
     const interval = setInterval(() => {
       if (sessionUtils.isSessionExpired()) {
         sessionUtils.clearSession();
-        setLogado(false);
+        logout();
         setJanelaLogin(true);
         alert('Sessão expirada por inatividade. Faça login novamente.');
         navigate('/');
@@ -82,18 +72,16 @@ function App() {
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [logado, navigate]);
+  }, [isAuthenticated, logout, navigate]);
 
   const handleLogout = () => {
-    sessionUtils.clearSession();
-    setLogado(false);
-    setDadosUsuario({ nomeUsuario: '', email: '' });
+    logout();
     setJanelaLogin(true);
     navigate('/');
   };
 
   const toggleLogin = () => {
-    if (logado) {
+    if (isAuthenticated) {
       handleLogout();
     } else {
       setJanelaLogin(true);
@@ -101,16 +89,10 @@ function App() {
   };
 
   const handleLoginSuccess = () => {
-    const userData = localStorage.getItem('userData');
-    setPermissao(localStorage.getItem('permissao'));
-    if (userData) {
-      setDadosUsuario({ nomeUsuario: JSON.parse(userData).username });
-      setLogado(true);
-    }
     setJanelaLogin(false);
   };
 
-  if (carregando) {
+  if (carregando || authLoading) {
     return <div className="carregando">Carregando...</div>;
   }
 
@@ -122,21 +104,15 @@ function App() {
         </button>
         <nav className={`menuSuperior ${menuAberto ? 'aberto' : ''}`}>
           <button className='botaoLogin' onClick={toggleLogin}>
-            {logado ? (
+            {isAuthenticated ? (
               <span>
-                <p>Usuário: <b>{dadoUsuario.nomeUsuario}</b></p>
+                <p>Usuário: <b>{user?.username || 'Usuário'}</b></p>
                 <p className='p'>Clique para sair</p>
               </span>
             ) : (
               'Login'
             )}
           </button>
-          {/* <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
-            Início
-          </NavLink>
-          <NavLink to="/registros" onClick={() => setMenuAberto(false)}>
-            Registros
-          </NavLink> */}
           <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
             Registros
           </NavLink>
@@ -146,7 +122,7 @@ function App() {
           <NavLink to="/motoristas" onClick={() => setMenuAberto(false)}>
             Motoristas
           </NavLink>
-          {permissao == 'administrador' && (
+          {permissao === 'administrador' && (
             <NavLink to="/usuarios" onClick={() => setMenuAberto(false)}>
               Usuários
             </NavLink>
@@ -157,7 +133,6 @@ function App() {
 
       <main className='mainPrincipal'>
         <Routes>
-          {/* <Route path="/" element={<Inicio />} /> */}
           <Route path="/" element={
             <RotaProtegida>
               <Registros />
@@ -189,11 +164,11 @@ function App() {
         />
       )}
 
-      {!logado && (
+      {!isAuthenticated && (
         <div className="overlayBloqueio" />
       )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

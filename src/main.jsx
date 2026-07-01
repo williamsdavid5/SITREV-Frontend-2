@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import { MotoristasProvider } from './contexts/MotoristasContext.jsx'
 import { VeiculosProvider } from './contexts/VeiculosContext.jsx'
 import { ViagensProvider } from './contexts/ViagensContext.jsx'
+import { UsuariosProvider } from './contexts/UsuariosContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,9 +16,11 @@ createRoot(document.getElementById('root')).render(
       <MotoristasProvider>
         <VeiculosProvider>
           <ViagensProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
+            <UsuariosProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </UsuariosProvider>
           </ViagensProvider>
         </VeiculosProvider>
       </MotoristasProvider>

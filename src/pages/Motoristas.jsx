@@ -1,4 +1,4 @@
-// pages/Motoristas.jsx
+
 import { useEffect, useState } from "react";
 import './motoristas.css'
 import FotoMotorista from '../assets/motoristaFoto.png'
@@ -34,12 +34,10 @@ export default function Motoristas() {
     const [permissao, setPermissao] = useState(localStorage.getItem("permissao"));
     const [adicionandoNovo, setAdicionandoNovo] = useState(false);
 
-    // 🔥 ESTADOS PARA EDIÇÃO
     const [editandoId, setEditandoId] = useState(null);
     const [nomeEditando, setNomeEditando] = useState('');
     const [salvandoEdicao, setSalvandoEdicao] = useState(false);
 
-    // 🔥 ESTADOS PARA NOVO MOTORISTA
     const [novoNome, setNovoNome] = useState('');
     const [salvandoNovo, setSalvandoNovo] = useState(false);
     const [erroForm, setErroForm] = useState('');
@@ -54,7 +52,6 @@ export default function Motoristas() {
         return () => clearTimeout(timeoutId);
     }, [buscaLocal, buscarMotoristas, searchTerm]);
 
-    // 🔥 ESCUTA MUDANÇAS NO LOCALSTORAGE PARA PERMISSÃO
     useEffect(() => {
         const handleStorageChange = () => {
             setPermissao(localStorage.getItem("permissao"));
@@ -81,7 +78,6 @@ export default function Motoristas() {
                 setNovoNome('');
                 setErroForm('');
                 alert('Motorista adicionado com sucesso!');
-                // Recarrega a lista para garantir sincronia
                 await recarregar();
             } else {
                 setErroForm(result.error || 'Erro ao adicionar motorista');
@@ -122,7 +118,6 @@ export default function Motoristas() {
         }
     };
 
-    // 🔥 FUNÇÃO PARA DELETAR MOTORISTA
     const handleDeletarMotorista = async (motorista) => {
         if (!window.confirm(`Tem certeza que deseja excluir o motorista ${motorista.nome}?`)) {
             return;
