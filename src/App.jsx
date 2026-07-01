@@ -1,4 +1,4 @@
-// App.jsx
+
 import { useState, useEffect } from 'react';
 import './App.css';
 import { Routes, Route, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -10,13 +10,17 @@ import Usuarios from './pages/Usuarios';
 import PaginaErro from './pages/PaginaErro';
 import SitrevLogo from './assets/SITREV_TEXT.svg';
 import RotaProtegida from './pages/components/RotaProtegida';
+import ModalAlterarSenha from './pages/components/ModalAlterarSenha';
 import { sessionUtils } from './utils/sessionUtils';
 import { useAuth } from './contexts/AuthContext';
+
+import Loadingif from './assets/loadingGif.gif';
 
 function App() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [janelaLogin, setJanelaLogin] = useState(false);
   const [carregando, setCarregando] = useState(true);
+  const [modalSenhaAberto, setModalSenhaAberto] = useState(false)
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -92,8 +96,21 @@ function App() {
     setJanelaLogin(false);
   };
 
+  const abrirModalSenha = () => {
+    setModalSenhaAberto(true);
+  };
+
+  const fecharModalSenha = () => {
+    setModalSenhaAberto(false);
+  };
+
   if (carregando || authLoading) {
-    return <div className="carregando">Carregando...</div>;
+    return (
+      <div className="carregando">
+        <img src={Loadingif} alt="" />
+        Carregando...
+      </div>
+    );
   }
 
   return (
@@ -112,6 +129,13 @@ function App() {
             ) : (
               'Login'
             )}
+          </button>
+          <button
+            className='botaolterarSenha'
+            onClick={abrirModalSenha}
+          >
+            Alterar a <br />
+            minha senha
           </button>
           <NavLink to="/" end className={'primeiroLink'} onClick={() => setMenuAberto(false)}>
             Registros
@@ -156,6 +180,12 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      {/* Modal de alterar senha */}
+      <ModalAlterarSenha
+        isOpen={modalSenhaAberto}
+        onClose={fecharModalSenha}
+      />
 
       {janelaLogin && (
         <Login

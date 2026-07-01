@@ -1,3 +1,4 @@
+// contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { api } from '../Services/api';
 import { sessionUtils } from '../utils/sessionUtils';
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [permissao, setPermissao] = useState(null);
     const [error, setError] = useState(null);
+    const [alterandoSenha, setAlterandoSenha] = useState(false);
 
     useEffect(() => {
         const loadUser = () => {
@@ -81,6 +83,25 @@ export const AuthProvider = ({ children }) => {
         window.dispatchEvent(new Event('logout'));
     }, []);
 
+    const alterarSenha = useCallback(async (senhaAtual, novaSenha) => {
+        setAlterandoSenha(true);
+        setError(null);
+        try {
+            const response = await api.post('/alterar-senha/', {
+                senha_atual: senhaAtual,
+                nova_senha: novaSenha
+            });
+            sessionUtils.updateActivity();
+
+            return { success: true, data: response };
+        } catch (error) {
+            setError(error.message);
+            return { success: false, error: error.message };
+        } finally {
+            setAlterandoSenha(false);
+        }
+    }, []);
+
     const isAuthenticated = sessionUtils.isSessionValid();
 
     return (
@@ -92,6 +113,8 @@ export const AuthProvider = ({ children }) => {
             logout,
             isAuthenticated,
             permissao,
+            alterandoSenha,
+            alterarSenha,
             setError,
         }}>
             {children}
